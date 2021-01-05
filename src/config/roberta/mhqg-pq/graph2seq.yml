@@ -82,7 +82,7 @@ use_bert: True
 finetune_bert: False
 use_bert_weight: True
 use_bert_gamma: False
-bert_model: 'robert-large-cased'
+bert_model: 'roberta-large'
 bert_dropout: 0.4
 bert_dim: 1024
 bert_max_seq_len: 500
