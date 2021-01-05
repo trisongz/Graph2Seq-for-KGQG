@@ -84,7 +84,7 @@ bert_dropout: 0.4
 bert_dim: 1024
 bert_max_seq_len: 500
 bert_doc_stride: 250
-bert_layer_indexes: '0;24'
+bert_layer_indexes: '0,24'
 
 
 # Training
