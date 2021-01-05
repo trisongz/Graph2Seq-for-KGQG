@@ -11,7 +11,7 @@ import json
 import torch
 from torch.utils.data import DataLoader
 import torch.backends.cudnn as cudnn
-
+import math
 from .model import Model, evaluate_predictions
 from .utils.data_utils import prepare_datasets, DataStream, vectorize_input
 from .utils.seq_data_utils import prepare_datasets as seq_prepare_datasets
@@ -54,12 +54,19 @@ class ModelHandler(object):
 
         # Load BERT featrues
         if config['use_bert']:
-            from pytorch_pretrained_bert import BertTokenizer
-            from pytorch_pretrained_bert.modeling import BertModel
-            print('[ Using pretrained BERT features ]')
-            bert_tokenizer = BertTokenizer.from_pretrained(config['bert_model'], do_lower_case=True)
-            self.bert_model = BertModel.from_pretrained(config['bert_model']).to(self.device)
+            #from pytorch_pretrained_bert import BertTokenizer
+            #from pytorch_pretrained_bert.modeling import BertModel
+            from transformers import BertTokenizer, BertModel, RobertaTokenizer, RobertaModel
+            if 'roberta' in config['bert_model']:
+                print('[ Using pretrained RoBERT features ]')
+                bert_tokenizer = RobertaTokenizer.from_pretrained(config['bert_model'], do_lower_case=False)
+                self.bert_model = RobertaModel.from_pretrained(config['bert_model']).to(self.device)
+            else:
+                print('[ Using pretrained BERT features ]')
+                bert_tokenizer = BertTokenizer.from_pretrained(config['bert_model'], do_lower_case=True)
+                self.bert_model = BertModel.from_pretrained(config['bert_model']).to(self.device)
             config['bert_model'] = self.bert_model
+
             if not config.get('finetune_bert', None):
                 print('[ Fix BERT layers ]')
                 self.bert_model.eval()
@@ -203,7 +210,7 @@ class ModelHandler(object):
             for param in self.bert_model.parameters():
                 param.requires_grad = False
         print('[ Beam size: {} ]'.format(self.config['beam_size']))
-        output, gold = self._run_epoch(self.test_loader, training=False, verbose=0,
+        output, gold, srcs = self._run_epoch(self.test_loader, training=False, verbose=0,
                                  out_predictions=self.config['out_predictions'])
 
         timer.finish()
@@ -219,14 +226,17 @@ class ModelHandler(object):
 
         if self.config['out_predictions']:
             out_dir = self.config['out_dir'] if self.config['out_dir'] else self.config['pretrained']
-            out_path = os.path.join(out_dir, 'beam_{}_block_ngram_repeat_{}_{}'.format(self.config['beam_size'], self.config['block_ngram_repeat'], Constants._PREDICTION_FILE))
+            #out_path = os.path.join(out_dir, 'beam_{}_block_ngram_repeat_{}_{}'.format(self.config['beam_size'], self.config['block_ngram_repeat'], Constants._PREDICTION_FILE))
+            out_path = os.path.join(out_dir, 'beam_{}_block_ngram_repeat_{}_{}'.format(self.config['beam_size'], self.config['block_ngram_repeat'], Constants._PREDICTION_JSON))
             with open(out_path, 'w') as out_f:
-                for line in output:
-                    out_f.write(line + '\n')
+                for x, line in enumerate(output):
+                    out_f.write(json.dumps({'pred': output[x], 'trg': gold[x], 'src': srcs[x]}))
+                    out_f.write('\n')
+                    #out_f.write(line + '\n')
 
-            with open(os.path.join(out_dir, Constants._REFERENCE_FILE), 'w') as ref_f:
-                for line in gold:
-                    ref_f.write(line + '\n')
+            #with open(os.path.join(out_dir, Constants._REFERENCE_FILE), 'w') as ref_f:
+            #    for line in gold:
+            #        ref_f.write(line + '\n')
             print('Saved predictions to {}'.format(out_path))
 
         print("Finished Testing: {}".format(self.dirname))
@@ -241,6 +251,7 @@ class ModelHandler(object):
             self.model.optimizer.zero_grad()
         output = []
         gold = []
+        src = []
         for step in range(data_loader.get_num_batch()):
             input_batch = data_loader.nextBatch()
             x_batch = self.vectorize_input(input_batch, self.config, self.bert_model, training=training, device=self.device)
@@ -266,7 +277,11 @@ class ModelHandler(object):
             if mode == 'test' and out_predictions:
                 output.extend(res['predictions'])
                 gold.extend(x_batch['target_src'])
-        return output, gold
+                src.extend(x_batch['in_graphs'])
+        if mode == 'test':
+            return output, gold, src
+        else:
+            return output, gold
 
     def self_report(self, step, mode='train'):
         if mode == "train":

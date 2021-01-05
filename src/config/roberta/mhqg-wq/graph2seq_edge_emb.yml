@@ -6,12 +6,10 @@ testset: '../data/mhqg-wq/test.json'
 pretrained_word_embed_file: '../data/glove.840B.300d.txt'
 wmd_emb_file: null
 saved_vocab_file: '../data/mhqg-wq/vocab_model_min3'
-pretrained_entity_embed_file: '../data/mhqg-wq/entity_emb.ndjson'
-pretrained_relation_embed_file: '../data/mhqg-wq/relation_emb.ndjson'
 pretrained: null
 
 # Output
-out_dir: '../out/mhqg-wq/graph2seq_kb'
+out_dir: '../out/mhqg-wq/roberta/graph2seq_edge_pair_fuse'
 
 
 # Preprocessing
@@ -22,21 +20,21 @@ max_dec_steps: 37 # 37! Including the EOS symbol
 
 # Model architecture
 model_name: 'graph2seq'
+levi_graph: False
 
 
 # Embedding
 word_embed_dim: 300
 fix_word_embed: True
 f_ans: False
-f_ans_match: False
+f_ans_match: True
 f_ans_pool: False
 f_node_type: False
-use_word_emb: False
-kg_emb: True
+kg_emb: False
 entity_emb_dim: 50
 entity_type_emb_dim: 50
 relation_emb_dim: 50
-ans_match_emb_dim: 4 # 4!
+ans_match_emb_dim: 32 # 32!
 
 
 hidden_size: 300
@@ -73,8 +71,8 @@ eps_label_smoothing: 0.2 # 0.2!
 # Graph neural networks
 graph_type: 'static' # 'static'
 graph_direction: 'all' # 'all', 'forward', 'backward'
-message_function: 'no_edge' # 'edge_pair', 'no_edge'
-graph_hops: 4 # 4!!
+message_function: 'edge_pair' # 'edge_pair', 'no_edge'
+graph_hops: 3 # 3!!
 
 
 # # Bert configure
@@ -82,12 +80,12 @@ use_bert: False
 finetune_bert: False
 use_bert_weight: True
 use_bert_gamma: False
-bert_model: 'bert-large-uncased'
+bert_model: 'robert-large-cased'
 bert_dropout: 0.4
 bert_dim: 1024
 bert_max_seq_len: 500
 bert_doc_stride: 250
-bert_layer_indexes: '0;24'
+bert_layer_indexes: '0,24'
 
 
 # Training

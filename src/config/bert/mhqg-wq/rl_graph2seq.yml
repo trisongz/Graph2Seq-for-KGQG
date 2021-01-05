@@ -6,10 +6,10 @@ testset: '../data/mhqg-wq/test.json'
 pretrained_word_embed_file: '../data/glove.840B.300d.txt'
 wmd_emb_file: null
 saved_vocab_file: '../data/mhqg-wq/vocab_model_min3'
-pretrained: null
+pretrained: '../out/mhqg-wq/bert/graph2seq'
 
 # Output
-out_dir: '../out/mhqg-wq/graph2seq_edge_pair_fuse'
+out_dir: null
 
 
 # Preprocessing
@@ -20,7 +20,6 @@ max_dec_steps: 37 # 37! Including the EOS symbol
 
 # Model architecture
 model_name: 'graph2seq'
-levi_graph: False
 
 
 # Embedding
@@ -35,6 +34,7 @@ entity_emb_dim: 50
 entity_type_emb_dim: 50
 relation_emb_dim: 50
 ans_match_emb_dim: 32 # 32!
+
 
 
 hidden_size: 300
@@ -71,8 +71,8 @@ eps_label_smoothing: 0.2 # 0.2!
 # Graph neural networks
 graph_type: 'static' # 'static'
 graph_direction: 'all' # 'all', 'forward', 'backward'
-message_function: 'edge_pair' # 'edge_pair', 'no_edge'
-graph_hops: 3 # 3!!
+message_function: 'no_edge' # 'edge_pair', 'no_edge'
+graph_hops: 4 # 4!!
 
 
 # # Bert configure
@@ -90,7 +90,7 @@ bert_layer_indexes: '0,24'
 
 # Training
 optimizer: 'adam'
-learning_rate: 0.001 # 0.001!
+learning_rate: 0.00001 # 0.00001!
 grad_clipping: 10 # 10!
 grad_accumulated_steps: 1
 eary_stop_metric: 'Bleu_4'
@@ -108,13 +108,15 @@ forcing_decay_type: 'exp'  # linear, exp, sigmoid, or None
 forcing_decay: 0.9999
 sample: False  # are non-teacher forced inputs based on sampling or greedy selection?
 # note: enabling reinforcement learning can significantly slow down training
-rl_ratio: 0  # use mixed objective if > 0; ratio of RL in the loss function
+rl_ratio: 0.02 # 0.02  # use mixed objective if > 0; ratio of RL in the loss function
 rl_ratio_power: 1  #0.7 # increase rl_ratio by **= rl_ratio_power after each epoch; (0, 1]
 rl_start_epoch: 1  # start RL at which epoch (later start can ensure a strong baseline)?
 max_rl_ratio: 0.99
-rl_reward_metric: 'Bleu_4'
+# rl_reward_metric: 'Bleu_4'
+rl_reward_metric: 'Bleu_4,ROUGE_L' # 'Bleu_4'
+rl_reward_metric_ratio: '1,0.02'
 rl_wmd_ratio: 0
-max_wmd_reward: 3
+max_wmd_reward: 1
 
 
 # Testing
