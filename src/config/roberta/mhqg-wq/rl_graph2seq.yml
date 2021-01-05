@@ -76,7 +76,7 @@ graph_hops: 4 # 4!!
 
 
 # # Bert configure
-use_bert: False
+use_bert: True
 finetune_bert: False
 use_bert_weight: True
 use_bert_gamma: False
