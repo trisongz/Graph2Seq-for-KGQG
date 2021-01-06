@@ -78,6 +78,7 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-config', '--config', required=True, type=str, help='path to the config file')
     parser.add_argument('--grid_search', action='store_true', help='flag: grid search')
+    parser.add_argument('--test', action='store_true', help='flag: run test only')
     args = vars(parser.parse_args())
     return args
 
@@ -141,4 +142,7 @@ if __name__ == '__main__':
     if cfg['grid_search']:
         grid_search_main(config)
     else:
+        if cfg['test']:
+            config['trainset'] = None
+            config['devset'] = None
         main(config)
