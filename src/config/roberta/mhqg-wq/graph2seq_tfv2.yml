@@ -6,8 +6,6 @@ testset: '../data/mhqg-wq/test.json'
 pretrained_word_embed_file: '../data/glove.840B.300d.txt'
 wmd_emb_file: null
 saved_vocab_file: '../data/mhqg-wq/vocab_model_min3'
-pretrained_entity_embed_file: '../data/mhqg-wq/entity_emb.ndjson'
-pretrained_relation_embed_file: '../data/mhqg-wq/relation_emb.ndjson'
 pretrained: null
 
 # Output
@@ -31,7 +29,7 @@ f_ans: False
 f_ans_match: True
 f_ans_pool: False
 f_node_type: False
-kg_emb: True
+kg_emb: False
 entity_emb_dim: 50
 entity_type_emb_dim: 50
 relation_emb_dim: 50
