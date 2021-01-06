@@ -6,7 +6,7 @@ testset: '../data/mhqg-wq/test.json'
 pretrained_word_embed_file: '../data/glove.840B.300d.txt'
 wmd_emb_file: null
 saved_vocab_file: '../data/mhqg-wq/vocab_model_min3'
-pretrained: null
+pretrained: '../out/mhqg-wq/roberta/graph2seq'
 
 # Output
 out_dir: '../out/mhqg-wq/roberta/graph2seq'
