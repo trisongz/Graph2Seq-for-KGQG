@@ -1,15 +1,15 @@
 # Data
 dataset_name: 'mhqg-wq'
-trainset: '../data/mhqg-wq/train.json'
-devset: '../data/mhqg-wq/dev.json'
+trainset: null
+devset: null
 testset: '../data/mhqg-wq/test.json'
 pretrained_word_embed_file: '../data/glove.840B.300d.txt'
 wmd_emb_file: null
 saved_vocab_file: '../data/mhqg-wq/vocab_model_min3'
-pretrained: null
+pretrained: '../out/mhqg-wq/roberta/graph2seq'
 
 # Output
-out_dir: '../out/mhqg-wq/roberta/graph2seq_ed'
+out_dir: '../out/mhqg-wq/roberta/graph2seq'
 
 
 # Preprocessing
@@ -46,13 +46,13 @@ rnn_size: 300
 
 # Attention & copy
 enc_attn: True  # decoder has attention over encoder states?
-dec_attn: True  # decoder has attention over previous decoder states?
+dec_attn: False  # decoder has attention over previous decoder states?
 pointer: True  # use pointer network (copy mechanism) in addition to word generator?
-out_embed_size: 1  # if set, use an additional layer before decoder output
+out_embed_size: null  # if set, use an additional layer before decoder output
 tie_embed: True  # tie the decoder output layer to the input embedding layer?
 
 # Coverage (to turn on/off, change both `enc_attn_cover` and `cover_loss`)
-enc_attn_cover: True  # provide coverage as input when computing enc attn?
+enc_attn_cover: False  # provide coverage as input when computing enc attn?
 cover_func: 'sum'  # how to aggregate previous attention distributions? sum or max
 cover_loss: 0 # 0.2! add coverage loss if > 0; weight of coverage loss as compared to NLLLoss
 show_cover_loss: True  # include coverage loss in the loss shown in the progress bar?
@@ -61,7 +61,7 @@ show_cover_loss: True  # include coverage loss in the loss shown in the progress
 word_dropout: 0.4 # 0.4!
 dropoutagg: 0 # dropout for regularization, used after each aggregator. 0 = no dropout
 enc_rnn_dropout: 0.3 # 0.3!
-dec_rnn_dropout: 0.3
+# dec_rnn_dropout: 0.3
 dec_in_dropout: 0
 dec_out_dropout: 0
 eps_label_smoothing: 0.2 # 0.2!
@@ -125,7 +125,7 @@ logging: True # Turn it off for Codalab
 # Beam search
 beam_size: 5
 min_out_len: 4 # Only for beam search
-max_out_len: 64 # Only for beam search
+max_out_len: 36 # Only for beam search
 block_ngram_repeat: 0 # Block repetition of ngrams during decoding. (To turn it off, set it to 0)
 
 
