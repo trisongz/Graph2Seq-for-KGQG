@@ -9,3 +9,4 @@ torch==1.4.0
 torchvision==0.5.0
 transformers
 pytorch_pretrained_bert
+trainingbar @ git+https://github.com/trisongz/trainingbar.git
