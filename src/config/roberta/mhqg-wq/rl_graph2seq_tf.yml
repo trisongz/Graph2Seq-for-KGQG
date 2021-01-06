@@ -30,17 +30,17 @@ f_ans_match: True
 f_ans_pool: False
 f_node_type: False
 kg_emb: False
-entity_emb_dim: 50
-entity_type_emb_dim: 50
-relation_emb_dim: 50
-ans_match_emb_dim: 32 # 32!
+entity_emb_dim: 100
+entity_type_emb_dim: 100
+relation_emb_dim: 100
+ans_match_emb_dim: 64 # 32!
 
 
 hidden_size: 300
 rnn_type: 'lstm'
 dec_hidden_size: 300  # if set, a matrix will transform enc state into dec state
 enc_bidi: True
-num_enc_rnn_layers: 1
+num_enc_rnn_layers: 4
 rnn_size: 300
 
 # Attention & copy
