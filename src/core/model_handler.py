@@ -278,7 +278,7 @@ class ModelHandler(object):
                 output.extend(res['predictions'])
                 gold.extend(x_batch['target_src'])
                 src.extend(x_batch['targets'].cpu().detach().numpy().tolist())
-                print(x_batch['in_graphs'])
+                print(input_batch['in_graphs'])
                 #x_batch['targets'].detach())
         if mode == 'test':
             return output, gold, src
