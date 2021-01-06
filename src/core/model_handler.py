@@ -277,7 +277,7 @@ class ModelHandler(object):
             if mode == 'test' and out_predictions:
                 output.extend(res['predictions'])
                 gold.extend(x_batch['target_src'])
-                src.extend(x_batch['targets'])
+                src.extend(x_batch['targets'].detach())
         if mode == 'test':
             return output, gold, src
         else:
