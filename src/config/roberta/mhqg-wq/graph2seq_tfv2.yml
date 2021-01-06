@@ -23,7 +23,7 @@ model_name: 'graph2seq'
 
 
 # Embedding
-word_embed_dim: 400
+word_embed_dim: 300
 fix_word_embed: True
 f_ans: False
 f_ans_match: True
