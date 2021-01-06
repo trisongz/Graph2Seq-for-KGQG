@@ -210,7 +210,7 @@ class ModelHandler(object):
             for param in self.bert_model.parameters():
                 param.requires_grad = False
         print('[ Beam size: {} ]'.format(self.config['beam_size']))
-        output, gold, srcs = self._run_epoch(self.test_loader, training=False, verbose=0,
+        output, gold = self._run_epoch(self.test_loader, training=False, verbose=0,
                                  out_predictions=self.config['out_predictions'])
 
         timer.finish()
@@ -230,7 +230,7 @@ class ModelHandler(object):
             out_path = os.path.join(out_dir, 'beam_{}_block_ngram_repeat_{}_{}'.format(self.config['beam_size'], self.config['block_ngram_repeat'], Constants._PREDICTION_JSON))
             with open(out_path, 'w') as out_f:
                 for x, line in enumerate(output):
-                    out_f.write(json.dumps({'pred': output[x], 'trg': gold[x], 'src': srcs[x]}))
+                    out_f.write(json.dumps({'pred': output[x], 'trg': gold[x]}))
                     out_f.write('\n')
                     #out_f.write(line + '\n')
 
@@ -277,13 +277,13 @@ class ModelHandler(object):
             if mode == 'test' and out_predictions:
                 output.extend(res['predictions'])
                 gold.extend(x_batch['target_src'])
-                src.extend(x_batch['targets'].cpu().detach().numpy().tolist())
-                print(input_batch['in_graphs'])
+                #src.extend(x_batch['targets'].cpu().detach().numpy().tolist())
+                #print(input_batch['in_graphs'])
                 #x_batch['targets'].detach())
-        if mode == 'test':
-            return output, gold, src
-        else:
-            return output, gold
+        #if mode == 'test':
+        #    return output, gold, src
+        #else:
+        return output, gold
 
     def self_report(self, step, mode='train'):
         if mode == "train":
