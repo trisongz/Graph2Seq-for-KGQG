@@ -40,7 +40,7 @@ hidden_size: 300
 rnn_type: 'lstm'
 dec_hidden_size: 300  # if set, a matrix will transform enc state into dec state
 enc_bidi: True
-num_enc_rnn_layers: 1
+num_enc_rnn_layers: 2
 rnn_size: 300
 
 
@@ -124,8 +124,8 @@ logging: True # Turn it off for Codalab
 
 # Beam search
 beam_size: 5
-min_out_len: 4 # Only for beam search
-max_out_len: 36 # Only for beam search
+min_out_len: 12 # Only for beam search
+max_out_len: 64 # Only for beam search
 block_ngram_repeat: 0 # Block repetition of ngrams during decoding. (To turn it off, set it to 0)
 
 
