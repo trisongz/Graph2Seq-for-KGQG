@@ -30,9 +30,9 @@ f_ans_match: True
 f_ans_pool: False
 f_node_type: False
 kg_emb: True
-entity_emb_dim: 100
-entity_type_emb_dim: 100
-relation_emb_dim: 100
+entity_emb_dim: 50
+entity_type_emb_dim: 50
+relation_emb_dim: 50
 ans_match_emb_dim: 64 # 32!
 
 
