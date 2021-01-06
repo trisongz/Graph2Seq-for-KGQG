@@ -123,7 +123,7 @@ save_params: True # Whether to save params
 logging: True # Turn it off for Codalab
 
 # Beam search
-beam_size: 5
+beam_size: 4
 min_out_len: 12 # Only for beam search
 max_out_len: 64 # Only for beam search
 block_ngram_repeat: 0 # Block repetition of ngrams during decoding. (To turn it off, set it to 0)
